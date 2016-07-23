@@ -26,6 +26,7 @@ namespace Luadicrous.Framework
 		{
 			OnSet?.Invoke(newValue);
 			value = newValue;
+			return this;
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Luadicrous.Framework
+﻿namespace Luadicrous.Framework
 {
 	public class BindingContext
 	{
@@ -12,9 +10,9 @@ namespace Luadicrous.Framework
 			scope.LoadCLRPackage();
 		}
 
-		public void LoadContext(FileInfo file)
+		public void LoadContext(System.IO.FileInfo file)
 		{
-			scope.DoFile(file.FullName);
+			NLua.LuaTable table = (NLua.LuaTable)scope.DoFile(file.FullName)[0];
 		}
 	}
 }
