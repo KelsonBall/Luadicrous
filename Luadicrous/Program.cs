@@ -8,9 +8,10 @@
 			state.LoadCLRPackage();
 			var app = new Luadicrous.Framework.LuadicrousApplication();
 			state["Application"] = app;
-
+			Luadicrous.Framework.LuadicrousApplication.ApplicationDirectory = "Demo";
+			string text = System.IO.File.ReadAllText ("Demo/app.lua");
 			if (args.Length == 0)
-				state.DoFile(@"C:\Users\kelso\Desktop\form.lua");			
+				state.DoString(text);
 			else
 				state.DoFile(args[0]);
 			
