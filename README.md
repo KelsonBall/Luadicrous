@@ -111,6 +111,12 @@ vm.Text.OnSet = (function ( newValue )
     vm.ReversedText:Set( reversedString )
 end)
 
+-- Here we create a function that handles the event when the 'Swap' button is clicked.
+vm.Clicked = (function ()
+    -- Sets the value of Text to the value of ReversedText (which triggers the Text.OnSet event).
+    vm.Text:Set(vm.ReversedText:Get())
+end)
+
 -- Now we return the view model table so that the framework can bind it to the view.
 return vm
 ```
