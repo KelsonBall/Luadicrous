@@ -4,9 +4,9 @@
 ## Overview
 Luadicrous is a wrapper around NLua and Gtk# that aims to bring beginner friendly, WPF inspired software development to Linux, Mac, and Windows.
 
-Luadicrous apps are written in Lua and Xml with built in support for the Model-View-ViewModel (MVVM) application architecture. Views are defined in Xml and have reference to a Lua script that builds a ViewModel. ViewModels contain **BindableProperty** fields and functions which are bound to properties and events on the UI. 
+Luadicrous apps are written in Lua and Xml with built in support for the Model-View-ViewModel (MVVM) application architecture. Views are defined in Xml and have a reference to a Lua script that builds a ViewModel. ViewModels contain **BindableProperty** fields and functions which are bound to properties and events on the UI. 
 
-Luadicrous also supports loosely-coupled messaging and templating (coming soon).
+Luadicrous also supports messaging via an event aggregator (implemented) and templating (coming soon).
 
 
 ## Runtime and Build Environment
@@ -31,11 +31,12 @@ Download and install Mono, GTK is packaged with Mono on Mac.
 
 ## Demo application
 
+### 1. Build the framework from source.
 Create a folder to contain your Luadicrous project (this folder will be refered to as your application folder).
-Build the Luadicrous.csproj file under the release configuration and copy the contents of the /bin/Release folder to a /bin/ directory in your application folder.
+Build the Luadicrous.csproj project under the release configuration and copy the contents of the /bin/Release folder to a /bin/ directory in your application folder. You may need to manually restore nuget packages to build succesfully. 
 
-### Have your app pull itself up by its own bootstraps.
-Create an app.lua folder directly in your application folder. This script will need to create a window and load a control into it.
+## 1. Having your app pull itself up by its own bootstraps.
+Create an app.lua file directly in your application folder. This script will need to create a window and load a control into it.
 
 ### /app.lua
 ```lua
@@ -55,6 +56,8 @@ window:AddChild(shell)
 window:Render()
 
 ``` 
+
+## 2. Create a GUI
 
 Create a Views folder and add this xml code to it.
 
@@ -83,6 +86,7 @@ Create a Views folder and add this xml code to it.
 </Control>
 ```
 
+## 3. Add functionality
 That last thing we need to do is create a view model for the ShellView to bind to. We do that by creating a script that returns a table.
 Create a ViewModels folder and add a script named ShellViewModel.lua.
 
@@ -110,10 +114,11 @@ end)
 -- Now we return the view model table so that the framework can bind it to the view.
 return vm
 ```
+## 4. Running the app
 
-To run the application run the /bin/Luadicrous.exe executable. It will search for your /app.lua script and run it.
+To start your application run the /bin/Luadicrous.exe executable. It will search for your /app.lua script and run it.
 
-#### The result:
+### The result:
 
 ![alt text](LuadicrousSampleEmpty.png "Before typing in the text box.")
 
