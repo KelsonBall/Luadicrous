@@ -28,11 +28,11 @@ namespace Luadicrous.Framework
 			set { entry.Text = value; }
 		}
 
-		internal static Tuple<Textbox, Func<VisualTreeElement, Textbox>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
 		{
 			Textbox element = new Textbox();
 			BindText(element, node, root);
-			return new Tuple<Textbox, Func<VisualTreeElement, Textbox>>(
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
 				element,
 				e => element
 			);

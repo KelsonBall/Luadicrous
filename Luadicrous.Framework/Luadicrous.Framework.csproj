@@ -81,6 +81,8 @@
     <Compile Include="LuaExtensions.cs" />
     <Compile Include="Mvvm\BindingMode.cs" />
     <Compile Include="Mvvm\Events.cs" />
+    <Compile Include="Widgets\Components\DrawingArea.cs" />
+    <Compile Include="Widgets\Containers\ListBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -32,64 +32,70 @@ namespace Luadicrous.Framework
 			return root;
 		}
 
-		internal static Tuple<Control, Func<VisualTreeElement, Control>> Parse(XmlNode node)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node)
 		{
 			Control element = new Control();
 			XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
 			if (bindingAttribute != null)
 				element.BindingContext = new BindingContext(bindingAttribute.Value);
-			return new Tuple<Control, Func<VisualTreeElement, Control>>(
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
 				element,
 				e => (Control)element.AddChild(e)
 			);
 		}
 
-		private static VisualTreeElement Serialize(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> ParseNested(XmlNode node, Control root)
 		{
-			VisualTreeElement element = null;
-			Func<VisualTreeElement, VisualTreeElement> addChild = null;
+			Control element = Control.LoadFromSource ( node.Attributes.GetNamedItem ("Source").Value );
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
+				element,
+				e => ((Control)element).AddChild(e)
+			);
+		}
+
+		private static VisualTreeElement Serialize(XmlNode node, Control root)
+		{			
+			Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> parse = null;
 			switch (node.Name)
 			{
 			case "Control":
-				element = Control.LoadFromSource(node.Attributes.GetNamedItem("Source").Value);
-				addChild = e => element;
+				parse = Control.ParseNested (node, root);
 				break;
 			case "VerticalPanel":
-				element = new VerticalPanel ();
-				addChild = e => ((VerticalPanel)element).AddChildren (e);
+				parse = VerticalPanel.Parse (node, root);
 				break;
 			case "HorizontalPanel":
-				element = new HorizontalPanel ();
-				addChild = e => ((HorizontalPanel)element).AddChildren (e);
+				parse = HorizontalPanel.Parse (node, root);
 				break;
 			case "Button":
-				var parsedButton = Button.Parse(node, root);
-				element = parsedButton.Item1;
-				addChild = parsedButton.Item2;
+				parse = Button.Parse(node, root);
 				break;
 			case "Label":
-				var parsedLabel = Label.Parse (node, root);
-				element = parsedLabel.Item1;
-				addChild = parsedLabel.Item2;
+				parse = Label.Parse (node, root);
 				break;
 			case "Text":
-				var parsedTextbox = Textbox.Parse(node, root);
-				element = parsedTextbox.Item1;
-				addChild = parsedTextbox.Item2;
+				parse = Textbox.Parse (node, root);
+				break;
+			case "DrawingArea":
+				parse = DrawingArea.Parse (node, root);
+
 				break;
 			default:
 				break;
 			}
-			if (element != null)
+			if (parse != null)
 			{
 				foreach (XmlNode child in node.ChildNodes)
 				{
+					if (child.NodeType == XmlNodeType.Comment)
+						continue;
 					var nextElement = Serialize(child, root);
 					if (nextElement != null)
-						addChild (nextElement);
+						parse.Item2 (nextElement);
 				}
+				return parse.Item1;
 			}
-			return element;
+			return null;
 		}
 	}
 }

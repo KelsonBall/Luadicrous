@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Control BindingContext="ViewModels/ShellViewModel.lua">
 	<HorizontalPanel>
-		<Control Source="Views/SidebarView.xml"/>
+		<!-- <Control Source="Views/SidebarView.xml"/> -->
 		<VerticalPanel>
 			<Text Text="{Binding Text}" />
 			<Label Text="{Binding ReversedText}" />
 			<HorizontalPanel>
-				<Label Text="Press to swap text values." />
+				<Label Text="Press to swap text:" />
 				<Button Click="{Binding Clicked}" >
 					<Label Text="Swap" />
 				</Button>

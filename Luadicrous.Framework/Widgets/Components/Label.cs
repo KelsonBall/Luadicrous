@@ -28,11 +28,11 @@ namespace Luadicrous.Framework
 			set { label.Text = value; } 
 		}
 
-		internal static Tuple<Label, Func<VisualTreeElement, Label>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
 		{
 			Label element = new Label ();
 			BindText(element, node, root);
-			return new Tuple<Label, Func<VisualTreeElement, Label>> (
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
 				element,
 				e => element
 			);

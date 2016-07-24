@@ -18,11 +18,11 @@ namespace Luadicrous.Framework
 			button = new Gtk.Button();
 		}
 
-		internal static Tuple<Button, Func<VisualTreeElement, Button>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
 		{
 			Button element = new Button();
 			BindClick(element, node, root);
-			return new Tuple<Button, Func<VisualTreeElement, Button>>(
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
 				element,
 				e => (Button)element.AddChild(e)
 			);
