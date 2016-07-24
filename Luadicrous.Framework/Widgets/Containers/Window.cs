@@ -13,6 +13,7 @@
 		public Window(string title = null)
 		{
 			window = new Gtk.Window(title);
+			window.Resize (200, 100);
 			window.DeleteEvent += (i, j) => LuadicrousApplication.Quit();
 		}
 

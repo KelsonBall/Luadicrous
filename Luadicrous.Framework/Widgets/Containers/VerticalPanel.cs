@@ -1,4 +1,7 @@
-﻿namespace Luadicrous.Framework
+﻿using System;
+using System.Xml;
+
+namespace Luadicrous.Framework
 {
 	public class VerticalPanel : MultipleItemContainer
 	{
@@ -13,6 +16,15 @@
 		public VerticalPanel()
 		{
 			box = new Gtk.VBox();
+		}
+
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		{
+			VerticalPanel element = new VerticalPanel ();
+			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
+				element,
+				e => ((VerticalPanel)element).AddChildren(e)
+			);
 		}
 	}
 }
