@@ -31,7 +31,7 @@ Download and install Mono, GTK is packaged with Mono on Mac.
 
 ## Demo application
 
-### 1. Build the framework from source.
+### Build the framework from source.
 Create a folder to contain your Luadicrous project (this folder will be refered to as your application folder).
 Build the Luadicrous.csproj project under the release configuration and copy the contents of the /bin/Release folder to a /bin/ directory in your application folder. You may need to manually restore nuget packages to build succesfully. 
 
