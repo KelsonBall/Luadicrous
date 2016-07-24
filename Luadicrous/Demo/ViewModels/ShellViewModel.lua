@@ -1,17 +1,33 @@
 ﻿import 'Luadicrous.Framework.dll'
 import 'Luadicrous.Framework'
-import 'System'
 
 vm = {}
 
 vm.Text = BindableProperty()
 
-vm.AcceptText = (function(args)
-	Console.WriteLine(vm.Text:Get())	
-end)
+function reverse(arg)
+	vm.ReversedText:Set(string.reverse(arg))
+end
 
-vm.ClearText = (function(args)
-	vm.Text:Set("")
+function double(arg)
+	vm.ReversedText:Set(arg .. arg)
+end
+
+vm.Text.OnSet = reverse
+
+Events.GetChannel("SidebarMode"):Subscribe((function (arg) 
+	if arg == "Reverse" then
+		vm.Text.OnSet = reverse
+	else
+		vm.Text.OnSet = double
+	end
+	vm.Text.OnSet(vm.Text:Get() or "")
+end))
+
+vm.ReversedText = BindableProperty()
+
+vm.Clicked = (function()
+	vm.Text:Set(vm.ReversedText:Get())
 end)
 
 return vm

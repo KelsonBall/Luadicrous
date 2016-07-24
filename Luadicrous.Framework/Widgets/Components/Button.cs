@@ -1,4 +1,7 @@
-﻿namespace Luadicrous.Framework
+﻿using System;
+using System.Xml;
+
+namespace Luadicrous.Framework
 {
 	public class Button : SingleItemContainer
 	{
@@ -13,6 +16,26 @@
 		public Button()
 		{
 			button = new Gtk.Button();
+		}
+
+		internal static Tuple<Button, Func<VisualTreeElement, Button>> Parse(XmlNode node, Control root)
+		{
+			Button element = new Button();
+			BindClick(element, node, root);
+			return new Tuple<Button, Func<VisualTreeElement, Button>>(
+				element,
+				e => (Button)element.AddChild(e)
+			);
+		}
+
+		private static void BindClick(Button element, XmlNode node, Control root)
+		{
+			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Click");
+			if (attribute?.Value.StartsWith("{Binding ") ?? false)
+			{
+				Action<EventHandler> subscribe = func => element.button.Clicked += func;
+				root.BindingContext.BindCommand(subscribe, "Click", attribute.Value);
+			}
 		}
 	}
 }

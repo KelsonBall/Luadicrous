@@ -26,18 +26,33 @@ namespace Luadicrous.Framework
 		{
 			XmlDocument document = new XmlDocument ();
 			document.Load (LuadicrousApplication.GetApplicationDirectoryRelativeTo(source));
-			return (Control)Serialize(document.DocumentElement);
+			var controlNode = document.DocumentElement;
+			Control root = (Control)Control.Parse(controlNode).Item1;
+			root.AddChild(Serialize(controlNode.FirstChild, root));
+			return root;
 		}
 
-		private static VisualTreeElement Serialize(XmlNode node)
+		internal static Tuple<Control, Func<VisualTreeElement, Control>> Parse(XmlNode node)
+		{
+			Control element = new Control();
+			XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
+			if (bindingAttribute != null)
+				element.BindingContext = new BindingContext(bindingAttribute.Value);
+			return new Tuple<Control, Func<VisualTreeElement, Control>>(
+				element,
+				e => (Control)element.AddChild(e)
+			);
+		}
+
+		private static VisualTreeElement Serialize(XmlNode node, Control root)
 		{
 			VisualTreeElement element = null;
 			Func<VisualTreeElement, VisualTreeElement> addChild = null;
 			switch (node.Name)
 			{
 			case "Control":
-				element = new Control ();
-				addChild = e => ((Control)element).AddChild (e);
+				element = Control.LoadFromSource(node.Attributes.GetNamedItem("Source").Value);
+				addChild = e => element;
 				break;
 			case "VerticalPanel":
 				element = new VerticalPanel ();
@@ -48,17 +63,19 @@ namespace Luadicrous.Framework
 				addChild = e => ((HorizontalPanel)element).AddChildren (e);
 				break;
 			case "Button":
-				element = new Button ();
-				addChild = e => ((Button)element).AddChild (e);
+				var parsedButton = Button.Parse(node, root);
+				element = parsedButton.Item1;
+				addChild = parsedButton.Item2;
 				break;
 			case "Label":
-				var parsed = Label.Parse (node);
-				element = parsed.Item1;
-				addChild = parsed.Item2;
+				var parsedLabel = Label.Parse (node, root);
+				element = parsedLabel.Item1;
+				addChild = parsedLabel.Item2;
 				break;
 			case "Text":
-				element = new Text ();
-				addChild = e => element;
+				var parsedTextbox = Textbox.Parse(node, root);
+				element = parsedTextbox.Item1;
+				addChild = parsedTextbox.Item2;
 				break;
 			default:
 				break;
@@ -67,7 +84,7 @@ namespace Luadicrous.Framework
 			{
 				foreach (XmlNode child in node.ChildNodes)
 				{
-					var nextElement = Serialize(child);
+					var nextElement = Serialize(child, root);
 					if (nextElement != null)
 						addChild (nextElement);
 				}

@@ -12,6 +12,11 @@ namespace Luadicrous.Framework
 		{
 		}
 
+		public BindableProperty(dynamic start)
+		{
+			value = start;
+		}
+
 		public Action<dynamic> OnGot;
 
 		public dynamic Get()
@@ -22,11 +27,31 @@ namespace Luadicrous.Framework
 
 		public Action<dynamic> OnSet;
 
+		internal Action<dynamic> OnPropertyChanged;
+
 		public BindableProperty Set(dynamic newValue)
 		{
-			OnSet?.Invoke(newValue);
+			if (value == newValue)
+				return this;			
 			value = newValue;
+			OnSet?.Invoke(newValue);
+			OnPropertyChanged?.Invoke(newValue);
 			return this;
+		}
+
+		internal BindableProperty SetSilent(dynamic newValue)
+		{
+			if (value == newValue)
+				return this;
+			value = newValue;
+			OnSet?.Invoke(newValue);
+			return this;
+		}
+
+		public static string ParseBindingExpression(string bindingExpression)
+		{
+			string exp = bindingExpression.Split(' ')[1];
+			return exp.Substring(0, exp.Length - 1);
 		}
 	}
 }

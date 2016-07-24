@@ -1,20 +1,36 @@
-﻿namespace Luadicrous
+﻿using Luadicrous.Framework;
+
+namespace Luadicrous
 {
 	public static class Program
 	{
 		public static void Main(string[] args)
 		{
-			NLua.Lua state = new NLua.Lua();
-			state.LoadCLRPackage();
+			NLua.Lua scope = new NLua.Lua();
+			scope.LoadCLRPackage();
 			var app = new Luadicrous.Framework.LuadicrousApplication();
-			state["Application"] = app;
-			Luadicrous.Framework.LuadicrousApplication.ApplicationDirectory = "Demo";
-			string text = System.IO.File.ReadAllText ("Demo/app.lua");
+			scope["Application"] = app;
+			string script = "";
+#if DEBUG
 			if (args.Length == 0)
-				state.DoString(text);
+			{
+				script = System.IO.File.ReadAllText("../../Demo/app.lua");
+				LuadicrousApplication.ApplicationDirectory = "../../Demo";
+			}
+#else
+			if (args.Length == 0)
+			{
+				script = System.IO.File.ReadAllText("../app.lua");
+				LuadicrousApplication.ApplicationDirectory = "../";
+			}
+#endif
 			else
-				state.DoFile(args[0]);
-			
+			{
+				var file = new System.IO.FileInfo(args[0]);
+				script = System.IO.File.ReadAllText(file.FullName);
+				LuadicrousApplication.ApplicationDirectory = file.Directory.FullName;
+			}
+			scope.PCall(script);
 			app.Run();
 			return;
 		}

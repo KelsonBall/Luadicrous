@@ -35,6 +35,8 @@
     <Reference Include="NLua">
       <HintPath>..\packages\NLua_Safe.1.3.2.1\lib\net45\NLua.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
     <Reference Include="atk-sharp">
       <HintPath>..\packages\GtkSharp.3.1.3\lib\net45\atk-sharp.dll</HintPath>
     </Reference>
@@ -56,8 +58,6 @@
     <Reference Include="pango-sharp">
       <HintPath>..\packages\GtkSharp.3.1.3\lib\net45\pango-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="LuaTableExtensions.cs" />
     <Compile Include="Widgets\Components\Button.cs" />
     <Compile Include="Widgets\Containers\Window.cs" />
-    <Compile Include="Widgets\Components\Text.cs" />
+    <Compile Include="Widgets\Components\Textbox.cs" />
     <Compile Include="VisualTree\VisualTree.cs" />
     <Compile Include="VisualTree\VisualTreeElement.cs" />
     <Compile Include="VisualTree\LeafElement.cs" />
@@ -78,6 +78,9 @@
     <Compile Include="Mvvm\BindableProperty.cs" />
     <Compile Include="Mvvm\BindingContext.cs" />
     <Compile Include="Mvvm\Control.cs" />
+    <Compile Include="LuaExtensions.cs" />
+    <Compile Include="Mvvm\BindingMode.cs" />
+    <Compile Include="Mvvm\Events.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
