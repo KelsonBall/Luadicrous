@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Control BindingContext="ViewModels/SuperHeroViewModel.lua">
+    <HorizontalPanel>
+        <Label Text="{Binding Name}">
+        <Button Click="{Binding DecrementStars}">
+            <Label Text="-" />
+        </Button>
+        <Label Text="{Binding Stars}">
+        <Button Click="{Binding IncrementStars}">
+            <Label Text="+" />
+        </Button>
+    </HorizontalPanel>
+</Control>

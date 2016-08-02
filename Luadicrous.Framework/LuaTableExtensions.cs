@@ -1,5 +1,7 @@
 ﻿using System;
 using NLua;
+using System.Dynamic;
+using System.Collections.Generic;
 
 namespace Luadicrous.Framework
 {
@@ -33,18 +35,31 @@ namespace Luadicrous.Framework
 
 		public static object ValueOfKey(this LuaTable table, string key)
 		{
-			var keyEnum = table.Keys.GetEnumerator();
-			var valEnum = table.Values.GetEnumerator();
-			while (keyEnum.MoveNext())
+			var keys = table.Keys.GetEnumerator();
+			var values = table.Values.GetEnumerator();
+			while (keys.MoveNext())
 			{
-				valEnum.MoveNext();
-				if (keyEnum.Current.ToString().Equals(key))
+				values.MoveNext();
+				if (keys.Current.ToString().Equals(key))
 				{
-					return valEnum.Current;
+					return values.Current;
 				}
 			}
 			return null;
 		}
+
+        public static dynamic ToDynamic(this LuaTable table)
+        {
+            var value = new ExpandoObject() as IDictionary<string, object>;
+            var keys = table.Keys.GetEnumerator();
+            var values = table.Values.GetEnumerator();
+            while (keys.MoveNext())
+            {
+                values.MoveNext();
+                value.Add((string)keys.Current, values.Current);
+            }
+            return (dynamic)value;
+        }
 	}
 }
 

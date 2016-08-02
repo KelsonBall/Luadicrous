@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Control BindingContext="ViewModels/ShellViewModel.lua">
+
+		<VerticalPanel>			
+			<HorizontalPanel>
+				<Button Click="{Binding LoadFromCsv}" >
+					<Label Text="Load" />
+				</Button>				
+				<Button Click="{Binding SaveFromCsv}" >
+					<Label Text="Save" />
+				</Button>
+			</HorizontalPanel>
+			<ListBox ItemsSource="{Binding SuperHeros}" TemplateSource="/Views/SuperHeroView.xml" TemplateProperty="{Binding source}" />
+		</VerticalPanel>
+</Control>

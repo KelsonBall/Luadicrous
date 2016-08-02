@@ -6,14 +6,17 @@
 		{
 			foreach (var child in children)
 				((Gtk.Container)Widget).Add(child.Widget);
-			return base.AddChildren(children);
+            ((Gtk.Container)Widget).ShowAll();
+
+            return base.AddChildren(children);
 		}
 
 		public new VisualTreeElement RemoveChildren(params VisualTreeElement[] children)
 		{
 			foreach (var child in children)
 				((Gtk.Container)Widget).Remove(child.Widget);
-			return base.RemoveChildren(children);
+            ((Gtk.Container)Widget).ShowAll();
+            return base.RemoveChildren(children);
 		}
 	}
 }

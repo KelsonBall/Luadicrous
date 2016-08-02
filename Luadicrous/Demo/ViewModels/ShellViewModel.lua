@@ -1,33 +1,22 @@
 ﻿import 'Luadicrous.Framework.dll'
 import 'Luadicrous.Framework'
 
-vm = {}
+function ViewModel()
+	local vm = {}
 
-vm.Text = BindableProperty()
+	vm.Items = BindableCollection()	
 
-function reverse(arg)
-	vm.ReversedText:Set(string.reverse(arg))
+	vm.Items:Add({ Name = "Hello" })
+
+	vm.ItemText = BindableProperty()
+
+	vm.Add = (function ()
+		vm.Items:Add({ Name = vm.ItemText:Get() })
+	end)
+
+	Events.GetChannel("ShellContentViewDeletionChannel"):Subscribe((function (arg) 
+		vm.Items:Remove(arg)
+	end))
+
+	return vm
 end
-
-function double(arg)
-	vm.ReversedText:Set(arg .. arg)
-end
-
-vm.Text.OnSet = reverse
-
-Events.GetChannel("SidebarMode"):Subscribe((function (arg) 
-	if arg == "Reverse" then
-		vm.Text.OnSet = reverse
-	else
-		vm.Text.OnSet = double
-	end
-	vm.Text.OnSet(vm.Text:Get() or "")
-end))
-
-vm.ReversedText = BindableProperty()
-
-vm.Clicked = (function()
-	vm.Text:Set(vm.ReversedText:Get())
-end)
-
-return vm
