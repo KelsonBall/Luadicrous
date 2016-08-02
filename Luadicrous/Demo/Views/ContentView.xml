@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Control BindingContext="ViewModels/ContentViewModel.lua">
+	<HorizontalPanel>
+		<Label Text="{Binding Content}" />
+		<Button Click="{Binding Delete}">
+			<Label Text="X" />
+		</Button>
+	</HorizontalPanel>
+</Control>

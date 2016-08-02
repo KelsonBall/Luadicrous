@@ -5,80 +5,62 @@ using System.Collections.Generic;
 
 namespace Luadicrous.Framework
 {
-	public class ListBox : MultipleItemContainer
-	{
-		private Gtk.VBox listbox;
+    public class ListBox : MultipleItemContainer
+    {
+        private Dictionary<string, Control> items = new Dictionary<string, Control>();
 
-		internal override Gtk.Widget Widget
-		{
-			get { return listbox; }
-			set { listbox = (Gtk.VBox)value; }
-		}
+        private Gtk.VBox listbox;
 
-		public ListBox ()
-		{
-			listbox = new Gtk.VBox (true, 0);
-		}
+        internal override Gtk.Widget Widget
+        {
+            get { return listbox; }
+            set { listbox = (Gtk.VBox)value; }
+        }
 
-		internal Control _header;
-		internal Control Header { 
-			get { return _header; }
-			set 
-			{ 
-				RemoveChildren (_header);
-				_header = value;
-				AddChildren (_header);
-				// Keep the header at the top of the vbox!
-				Gtk.Widget temp = listbox.Children [0];
-				listbox.Children [0] = _header.Widget;
-				listbox.Children [listbox.Children.Length - 1] = temp;
-			}
-		}
+        public ListBox()
+        {
+            listbox = new Gtk.VBox(false, 0);
+        }
 
-		internal LuaTable _items;
-		internal event Action<LuaTable> ItemsSourceChanged;
-		internal LuaTable Items 
-		{ 
-			get { return _items; }
-			set 
-			{
-				_items = value;
-				ItemsSourceChanged?.Invoke (value);
-			}
-		}
+        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+        {
+            ListBox element = new ListBox();
+            BindItemsSource(element, node, root);
+            return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+                element,
+                e => element
+            );
+        }
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
-		{
-			ListBox element = new ListBox ();
-			BindHeaderTemplate (element, node, root);
-			BindItemsSource (element, node, root);
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
-				element,
-				e => element
-			);
-		}
+        private static void BindItemsSource(ListBox element, XmlNode node, Control root)
+        {
+            var attribute = (XmlAttribute)node.Attributes.GetNamedItem("ItemsSource");
+            var itemTemplate = (XmlAttribute)node.Attributes.GetNamedItem("Template");
+            if (attribute?.Value.StartsWith("{Binding ") ?? false)
+            {
+                root.BindingContext.BindCollection(
+                    (k, e) => element.RemoveListItem(k, e),
+                    (k, e) => element.AddListItem(itemTemplate.Value, k, e),
+                    "ItemsSource",
+                    attribute.Value);
+            }
+            else
+            {
+                throw new Exception("Items source must be bound to a table in the view model.");
+            }
+        }
 
-		private static void BindHeaderTemplate(ListBox element, XmlNode node, Control root)
-		{
-			var attribute = (XmlAttribute)node.Attributes.GetNamedItem ("HeaderTemplate");
-			element.Header = Control.LoadFromSource (attribute.Value);
-		}
+        private void AddListItem(string template, string key, dynamic item)
+        {
+            Control listItem = Control.LoadFromSource(template, key, item);
+            items[key] = listItem;
+            this.AddChildren(listItem);
+        }
 
-		private static void BindItemsSource(ListBox element, XmlNode node, Control root)
-		{
-			var attribute = (XmlAttribute)node.Attributes.GetNamedItem ("ItemsSource");
-			if (attribute?.Value.StartsWith ("{Binding ") ?? false)
-			{
-			//	root.BindingContext.BindProperty (
-			//		func => element.ItemsSourceChanged += func,
-			//		() => element.Items,
-			//		items => element.Items = items,
-			//		"ItemsSource",
-			//		attribute.Value);
-			} 
-			else
-				throw new Exception ("Items source must be bound to a table in the view model.");
-		}
-	}
+        private void RemoveListItem(string key, dynamic item)
+        {
+            this.RemoveChildren(items[key]);
+        }
+    }
 }
 
