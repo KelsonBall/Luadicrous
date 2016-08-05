@@ -35,6 +35,21 @@ Download and install Mono, GTK is packaged with Mono on Mac.
 Create a folder to contain your Luadicrous project (this folder will be refered to as your application folder).
 Build the Luadicrous.csproj project under the release configuration and copy the contents of the /bin/Release folder to a /bin/ directory in your application folder. You may need to manually restore nuget packages to build succesfully. 
 
+### Project structure
+The application files will be layed out in this structure.
+
+```
++ Demo
+ - app.lua
+ + bin
+  - Luadicrous.exe
+  - Luadicrous.Framework.dll
+ + ViewModels
+  - ShellViewModel.lua
+ + Views
+  - ShellView.xml
+```
+
 ## 1. Having your app pull itself up by its own bootstraps.
 Create an app.lua file directly in your application folder. This script will need to create a window and load a control into it.
 
@@ -96,8 +111,9 @@ Create a ViewModels folder and add a script named ShellViewModel.lua.
 import 'Luadicrous.Framework.dll'
 import 'Luadicrous.Framework'
 
--- Create a table to contain the view model (vm).
+-- This function will be called by the framework whenever a new ShellViewModel is needed
 function ViewModel()
+    -- Create a table to contain the view model (vm).
     vm = {}
     
     -- The value of this property is 'Bound' by the framework to the Text property of the text entry control in the view.
