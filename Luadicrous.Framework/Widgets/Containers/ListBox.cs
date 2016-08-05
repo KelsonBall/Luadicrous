@@ -1,4 +1,4 @@
-﻿using NLua;
+﻿using Gtk;
 using System;
 using System.Xml;
 using System.Collections.Generic;
@@ -9,17 +9,17 @@ namespace Luadicrous.Framework
     {
         private Dictionary<string, Control> items = new Dictionary<string, Control>();
 
-        private Gtk.VBox listbox;
+        private VBox listbox;
 
-        internal override Gtk.Widget Widget
+        internal override Widget Widget
         {
             get { return listbox; }
-            set { listbox = (Gtk.VBox)value; }
-        }
+            set { listbox = (VBox)value; }
+        }        
 
         public ListBox()
         {
-            listbox = new Gtk.VBox(false, 0);
+            listbox = new VBox(false, 0);
         }
 
         internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
