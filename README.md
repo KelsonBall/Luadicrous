@@ -97,28 +97,30 @@ import 'Luadicrous.Framework.dll'
 import 'Luadicrous.Framework'
 
 -- Create a table to contain the view model (vm).
-vm = {}
+function ViewModel()
+    vm = {}
+    
+    -- The value of this property is 'Bound' by the framework to the Text property of the text entry control in the view.
+    vm.Text = BindableProperty()
+    
+    -- This value is bound to the Text property of the Label in the view.
+    vm.ReversedText = BindableProperty()
+    
+    -- Here we create a function to handle changes to the Text property.
+    vm.Text.OnSet = (function ( newValue )
+        local reversedString = string.reverse( newValue )
+        vm.ReversedText:Set( reversedString )
+    end)
+    
+    -- Here we create a function that handles the event when the 'Swap' button is clicked.
+    vm.Clicked = (function ()
+        -- Sets the value of Text to the value of ReversedText (which triggers the Text.OnSet event).
+        vm.Text:Set(vm.ReversedText:Get())
+    end)
 
--- The value of this property is 'Bound' by the framework to the Text property of the text entry control in the view.
-vm.Text = BindableProperty()
-
--- This value is bound to the Text property of the Label in the view.
-vm.ReversedText = BindableProperty()
-
--- Here we create a function to handle changes to the Text property.
-vm.Text.OnSet = (function ( newValue )
-    local reversedString = string.reverse( newValue )
-    vm.ReversedText:Set( reversedString )
-end)
-
--- Here we create a function that handles the event when the 'Swap' button is clicked.
-vm.Clicked = (function ()
-    -- Sets the value of Text to the value of ReversedText (which triggers the Text.OnSet event).
-    vm.Text:Set(vm.ReversedText:Get())
-end)
-
--- Now we return the view model table so that the framework can bind it to the view.
-return vm
+    -- Now we return the view model table so that the framework can bind it to the view.
+    return vm
+end
 ```
 ## 4. Running the app
 
