@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using System;
 using Gtk;
+using Luadicrous.Framework.Serialization;
 
 namespace Luadicrous.Framework
 {
@@ -28,11 +29,11 @@ namespace Luadicrous.Framework
 			set { entry.Text = value; }
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Textbox element = new Textbox();
 			BindText(element, node, root);
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+			return new ElementPair(
 				element,
 				e => element
 			);
@@ -40,8 +41,8 @@ namespace Luadicrous.Framework
 
 		private static void BindText(Textbox element, XmlNode node, Control root)
 		{
-			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Text");
-			if (attribute?.Value.StartsWith("{Binding ") ?? false)
+			XmlAttribute attribute = node.Attribute("Text");
+			if (attribute.IsBinding())
 			{
 				Action<EventHandler> subscribe = 
 					func => ((IEditable)element.Widget).Changed += func;

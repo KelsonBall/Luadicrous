@@ -28,7 +28,7 @@ namespace Luadicrous.Framework
 			XmlDocument document = new XmlDocument ();
 			document.Load (LuadicrousApplication.GetApplicationDirectoryRelativeTo(source));
 			var controlNode = document.DocumentElement;
-			Control root = (Control)Control.Parse(controlNode).Item1;
+			Control root = (Control)Control.Parse(controlNode).Element;
 			root.AddChild(XmlSerializer.Serialize(controlNode.FirstChild, root));
 			return root;
 		}
@@ -38,45 +38,45 @@ namespace Luadicrous.Framework
             XmlDocument document = new XmlDocument();
             document.Load(LuadicrousApplication.GetApplicationDirectoryRelativeTo(source));
             var controlNode = document.DocumentElement;
-            Control root = (Control)Control.Parse(controlNode, key, model).Item1;
+            Control root = (Control)Control.Parse(controlNode, key, model).Element;
             root.AddChild(XmlSerializer.Serialize(controlNode.FirstChild, root));
             return root;
         }
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node)
+        internal static ElementPair Parse(XmlNode node)
 		{
 			Control element = new Control();
-			XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
+			XmlAttribute bindingAttribute = node.Attribute("BindingContext");
 			if (bindingAttribute != null)
             {                
                 element.BindingContext = new BindingContext(bindingAttribute.Value);
             }
 				
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+			return new ElementPair(
 				element,
 				e => (Control)element.AddChild(e)
 			);
 		}
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, string key, dynamic model)
+        internal static ElementPair Parse(XmlNode node, string key, dynamic model)
         {
             Control element = new Control();
-            XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
+            XmlAttribute bindingAttribute = node.Attribute("BindingContext");
             if (bindingAttribute != null)
             {
                 element.BindingContext = new BindingContext(bindingAttribute.Value, key, model);
             }
 
-            return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+            return new ElementPair(
                 element,
                 e => (Control)element.AddChild(e)
             );
         }
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> ParseNested(XmlNode node, Control root)
+        internal static ElementPair ParseNested(XmlNode node, Control root)
 		{
 			Control element = Control.LoadFromSource ( node.Attributes.GetNamedItem ("Source").Value );
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
+			return new ElementPair (
 				element,
 				e => ((Control)element).AddChild(e)
 			);

@@ -25,13 +25,13 @@ namespace Luadicrous.Framework
             return AddChildren(element);
         }
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+        internal static ElementPair Parse(XmlNode node, Control root)
         {
             Grid grid = new Grid();            
             var rows = uint.Parse(node.Attributes.GetNamedItem("Rows").Value);
             var columns = uint.Parse(node.Attributes.GetNamedItem("Columns").Value);
             grid._table = new Table(rows, columns, true);
-            return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+            return new ElementPair(
                     grid,
                     e => grid.AddItem(e)
                 );

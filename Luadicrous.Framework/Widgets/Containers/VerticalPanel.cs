@@ -18,10 +18,10 @@ namespace Luadicrous.Framework
 			box = new Gtk.VBox();
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			VerticalPanel element = new VerticalPanel ();
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
+			return new ElementPair (
 				element,
 				e => ((VerticalPanel)element).AddChildren(e)
 			);

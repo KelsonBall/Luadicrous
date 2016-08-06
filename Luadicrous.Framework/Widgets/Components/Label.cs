@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using Gtk;
+using Luadicrous.Framework.Serialization;
 
 namespace Luadicrous.Framework
 {
@@ -28,20 +29,20 @@ namespace Luadicrous.Framework
 			set { label.Text = value; } 
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Label element = new Label ();
 			BindText(element, node, root);
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
+			return new ElementPair (
 				element,
 				e => element
 			);
 		}
 
-		private static void BindText(Label element, XmlNode node, Control root)
+		internal static void BindText(Label element, XmlNode node, Control root)
 		{
-			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Text");
-			if (attribute?.Value.StartsWith("{Binding ") ?? false)
+			XmlAttribute attribute = node.Attribute("Text");
+			if (attribute.IsBinding())
 			{
 				Action<EventHandler> subscribe = func => { };
 				root.BindingContext.BindProperty(subscribe, 

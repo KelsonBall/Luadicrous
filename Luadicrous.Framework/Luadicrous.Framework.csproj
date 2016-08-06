@@ -49,15 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GtkExtensions.cs" />
     <Compile Include="Mvvm\BindableCollection.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LuadicrousApplication.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="LuaTableExtensions.cs" />
+    <Compile Include="Serialization\BindWidget.cs" />
+    <Compile Include="Serialization\ElementPair.cs" />
     <Compile Include="Serialization\IAttachable.cs" />
+    <Compile Include="Serialization\XmlExtensions.cs" />
     <Compile Include="Serialization\XmlSerializer.cs" />
     <Compile Include="Widgets\Components\Button.cs" />
+    <Compile Include="Widgets\Components\Calendar.cs" />
     <Compile Include="Widgets\Containers\Grid.cs" />
     <Compile Include="Widgets\Containers\Window.cs" />
     <Compile Include="Widgets\Components\Textbox.cs" />
