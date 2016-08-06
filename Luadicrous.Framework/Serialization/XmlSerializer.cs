@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Luadicrous.Framework.Widgets.Components;
 
 namespace Luadicrous.Framework.Serialization
 {
@@ -11,7 +12,7 @@ namespace Luadicrous.Framework.Serialization
     {
         internal static VisualTreeElement Serialize(XmlNode node, Control root)
         {
-            Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> parse = null;
+            ElementPair parse = null;
             switch (node.Name)
             {
                 case "Control":
@@ -38,22 +39,26 @@ namespace Luadicrous.Framework.Serialization
                 case "Grid":
                     parse = Grid.Parse(node, root);
                     break;
+                case "Calendar":
+                    parse = Calendar.Parse(node, root);
+                    break;
                 default:
                     break;
             }
             if (parse != null)
             {
+                parse.Element.BindWidgetProperties(node, root);
                 foreach (XmlNode child in node.ChildNodes)
                 {
                     if (child.NodeType == XmlNodeType.Comment)
                         continue;
                     var nextElement = Serialize(child, root);
-                    if (parse.Item1 is IAttachable)
-                        ((IAttachable)parse.Item1).AttachProperties(nextElement, child);
+                    if (parse.Element is IAttachable)
+                        ((IAttachable)parse.Element).AttachProperties(nextElement, child);
                     if (nextElement != null)
-                        parse.Item2(nextElement);
+                        parse.AddToElement(nextElement);
                 }
-                return parse.Item1;
+                return parse.Element;
             }
             return null;
         }

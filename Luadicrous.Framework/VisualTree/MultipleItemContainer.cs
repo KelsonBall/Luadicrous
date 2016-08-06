@@ -1,4 +1,6 @@
-﻿namespace Luadicrous.Framework
+﻿using System;
+
+namespace Luadicrous.Framework
 {
 	public abstract class MultipleItemContainer : VisualTreeElement
 	{
@@ -9,6 +11,14 @@
             ((Gtk.Container)Widget).ShowAll();
             return base.AddChildren(children);
 		}
+
+        public VisualTreeElement PackChildren(Action<Gtk.Widget> pack, params VisualTreeElement[] children)
+        {
+            foreach (var child in children)
+                pack(child.Widget);
+            ((Gtk.Container)Widget).ShowAll();
+            return base.AddChildren(children);
+        }
 
 		public new VisualTreeElement RemoveChildren(params VisualTreeElement[] children)
 		{

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Control BindingContext="ViewModels/ContentViewModel.lua">
-	<Grid Rows="1" Columns="2">
+<Control BindingContext="ViewModels/ContentViewModel.lua" Margin="10">
+	<Grid Rows="1" Columns="2" VerticalAlignment="Start" VerticalExpand="false">
 		<Label Text="{Binding Content}" />
-		<Button Grid.Column="1" Click="{Binding Delete}">
+		<Button Grid.Column="1" Click="{Binding Delete}" Margin="0, 0, 10, 0">
 			<Label Text="X" />
 		</Button>
 	</Grid>

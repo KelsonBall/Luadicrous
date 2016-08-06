@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Control BindingContext="ViewModels/ShellViewModel.lua">	
 	<Grid Rows="0" Columns="2">
-		<VerticalPanel Grid.Column="1">
-			<HorizontalPanel>
-				<Text Text="{Binding ItemText}" />
-				<Button Click="{Binding Add}">
-					<Label Text="Add"/>
+		<VerticalPanel Grid.Column="0" Margin="10">
+			<Calendar Date="{Binding SelectedDate}" 
+					  VerticalAlignment="Center"
+					  HorizontalAlignment="Center"/>
+			<HorizontalPanel >
+				<Button Click="{Binding AddDateToList}" Margin="10">
+					<Label Text="Add To List" />
+				</Button>
+				<Button Click="{Binding GoToToday}" Margin="10">
+					<Label Text="Today" />
 				</Button>
 			</HorizontalPanel>
-			<ListBox ItemsSource="{Binding Items}" Template="Views/ContentView.xml" />		
-		</VerticalPanel>	
+		</VerticalPanel>
+		<ListBox ItemsSource="{Binding Items}" Template="Views/ContentView.xml" 
+				 Grid.Column="1"/>				
 	</Grid>	
 </Control>

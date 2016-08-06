@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Luadicrous.Framework.Serialization;
+using System;
 using System.Xml;
 
 namespace Luadicrous.Framework
@@ -23,11 +24,11 @@ namespace Luadicrous.Framework
             };                             
         }
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Button element = new Button();
 			BindClick(element, node, root);
-			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
+			return new ElementPair(
 				element,
 				e => (Button)element.AddChild(e)
 			);
@@ -35,8 +36,8 @@ namespace Luadicrous.Framework
 
 		private static void BindClick(Button element, XmlNode node, Control root)
 		{
-			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Click");
-			if (attribute?.Value.StartsWith("{Binding ") ?? false)
+			XmlAttribute attribute = node.Attribute("Click");
+			if (attribute.IsBinding())
 			{
 				Action<EventHandler> subscribe = func => element.button.Clicked += func;
 				root.BindingContext.BindCommand(subscribe, "Click", attribute.Value);

@@ -53,15 +53,17 @@ namespace Luadicrous.Framework
             string text = File.ReadAllText(file.FullName);
             scope.PCall(text);
             LuaFunction func = scope["ViewModel"] as LuaFunction;
-            viewModel = ((LuaTable)func.Call()[0]).ToDynamic();
+            viewModel = ((LuaTable)func.Call()[0]).ToDynamic();            
         }
 
 		public void BindProperty(Action<EventHandler> subscribe, Func<dynamic> getView, Action<dynamic> setView, string property, string bindingExpression, BindingMode mode = BindingMode.TwoWay)
 		{
 			string bindingPath = BindableProperty.ParseBindingExpression(bindingExpression);
 			var bindableProperty = (BindableProperty)viewModel[bindingPath];
-			if (bindableProperty.Get() != null)
-				setView(bindableProperty.Get());
+            if (bindableProperty.Get() != null)
+                setView(bindableProperty.Get());
+            else
+                bindableProperty.Set(getView());
 			subscribe( (sender, args) => bindableProperty.SetSilent( getView() ) );
 			bindableProperty.OnPropertyChanged += setView;
 		}
@@ -76,7 +78,7 @@ namespace Luadicrous.Framework
                 addToView(key, table.ToDynamic());
             }
             bindableCollection.OnAdded += addToView;
-            bindableCollection.OnRemoved += removeFromView;
+            bindableCollection.OnRemoved += removeFromView;            
         }
 
         public void BindCommand(Action<EventHandler> subscribe, string command, string bindingExpression)
