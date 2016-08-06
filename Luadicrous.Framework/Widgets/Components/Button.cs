@@ -13,9 +13,14 @@ namespace Luadicrous.Framework
 			set { button = (Gtk.Button)value; }
 		}
 
-		public Button()
-		{
-			button = new Gtk.Button();                                   
+        public Button()
+        {
+            button = new Gtk.Button {
+                Vexpand = false,
+                Hexpand = false,
+                Halign = Gtk.Align.Center,
+                Valign = Gtk.Align.Center
+            };                             
         }
 
 		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)

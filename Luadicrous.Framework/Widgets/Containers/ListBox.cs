@@ -19,7 +19,7 @@ namespace Luadicrous.Framework
 
         public ListBox()
         {
-            listbox = new VBox(false, 0);
+            listbox = new VBox(false, 0);            
         }
 
         internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)

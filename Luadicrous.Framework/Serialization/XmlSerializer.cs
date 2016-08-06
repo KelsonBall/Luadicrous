@@ -32,9 +32,6 @@ namespace Luadicrous.Framework.Serialization
                 case "Text":
                     parse = Textbox.Parse(node, root);
                     break;
-                case "DrawingArea":
-                    parse = DrawingArea.Parse(node, root);
-                    break;
                 case "ListBox":
                     parse = ListBox.Parse(node, root);
                     break;

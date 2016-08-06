@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Control BindingContext="ViewModels/ShellViewModel.lua">
-	<VerticalPanel>
-		<HorizontalPanel>
-			<Text Text="{Binding ItemText}" />
-			<Button Click="{Binding Add}">
-				<Label Text="Add"/>
-			</Button>
-		</HorizontalPanel>
-		<ListBox ItemsSource="{Binding Items}" Template="Views/ContentView.xml" />		
-	</VerticalPanel>
+<Control BindingContext="ViewModels/ShellViewModel.lua">	
+	<Grid Rows="0" Columns="2">
+		<VerticalPanel Grid.Column="1">
+			<HorizontalPanel>
+				<Text Text="{Binding ItemText}" />
+				<Button Click="{Binding Add}">
+					<Label Text="Add"/>
+				</Button>
+			</HorizontalPanel>
+			<ListBox ItemsSource="{Binding Items}" Template="Views/ContentView.xml" />		
+		</VerticalPanel>	
+	</Grid>	
 </Control>
