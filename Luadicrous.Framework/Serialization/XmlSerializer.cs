@@ -32,11 +32,11 @@ namespace Luadicrous.Framework.Serialization
                 case "Text":
                     parse = Textbox.Parse(node, root);
                     break;
-                case "DrawingArea":
-                    parse = DrawingArea.Parse(node, root);
-                    break;
                 case "ListBox":
                     parse = ListBox.Parse(node, root);
+                    break;
+                case "Grid":
+                    parse = Grid.Parse(node, root);
                     break;
                 default:
                     break;
@@ -48,6 +48,8 @@ namespace Luadicrous.Framework.Serialization
                     if (child.NodeType == XmlNodeType.Comment)
                         continue;
                     var nextElement = Serialize(child, root);
+                    if (parse.Item1 is IAttachable)
+                        ((IAttachable)parse.Item1).AttachProperties(nextElement, child);
                     if (nextElement != null)
                         parse.Item2(nextElement);
                 }

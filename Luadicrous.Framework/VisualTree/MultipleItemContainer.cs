@@ -7,7 +7,6 @@
 			foreach (var child in children)
 				((Gtk.Container)Widget).Add(child.Widget);
             ((Gtk.Container)Widget).ShowAll();
-
             return base.AddChildren(children);
 		}
 

@@ -13,7 +13,7 @@ namespace Luadicrous.Framework
 			set { box = (Gtk.VBox)value; }
 		}
 
-		public VerticalPanel()
+		internal VerticalPanel()
 		{
 			box = new Gtk.VBox();
 		}
