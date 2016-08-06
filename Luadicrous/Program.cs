@@ -30,8 +30,7 @@ namespace Luadicrous
 				script = System.IO.File.ReadAllText(file.FullName);
 				LuadicrousApplication.ApplicationDirectory = file.Directory.FullName;
 			}
-			scope.PCall(script);
-			app.Run();
+			scope.PCall(script);			
 			return;
 		}
 	}

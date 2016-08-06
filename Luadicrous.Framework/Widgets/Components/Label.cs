@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Xml;
-using Gtk;
+using wLabel = System.Windows.Forms.Label;
 
 namespace Luadicrous.Framework
 {
 	public class Label : LeafElement
 	{
-		private Gtk.Label label;
+		private wLabel label;
 
-		internal override Gtk.Widget Widget
+		internal override object Widget
 		{
 			get { return label; }
-			set { label = (Gtk.Label)value; }
+			set { label = (wLabel)value; }
 		}
 
-		public Label(string text = null)
-		{
-			if (text != null)
-				label = new Gtk.Label(text);
-			else
-				label = new Gtk.Label();
+        public Label(string text = null)
+        {
+            label = new wLabel
+            {
+                Text = text ?? string.Empty,
+                AutoSize = true
+            };
 		}
 
 		public string Text 
@@ -28,7 +29,7 @@ namespace Luadicrous.Framework
 			set { label.Text = value; } 
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Component root)
 		{
 			Label element = new Label ();
 			BindText(element, node, root);
@@ -38,7 +39,7 @@ namespace Luadicrous.Framework
 			);
 		}
 
-		private static void BindText(Label element, XmlNode node, Control root)
+		private static void BindText(Label element, XmlNode node, Component root)
 		{
 			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Text");
 			if (attribute?.Value.StartsWith("{Binding ") ?? false)

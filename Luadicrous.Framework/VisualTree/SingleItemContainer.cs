@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Gtk;
+using System.Windows.Forms;
+
 namespace Luadicrous.Framework
 {
 	public abstract class SingleItemContainer : VisualTreeElement
@@ -12,15 +13,15 @@ namespace Luadicrous.Framework
 			if (child != null)
 				RemoveChild(children);
 			child = childElement;
-			((Gtk.Bin)Widget).Child = childElement.Widget;
+            ((Control)Widget).Controls.Clear();
+            ((Control)Widget).Controls.Add((Control)childElement.Widget);
 			return base.AddChildren(children);
 		}
 
 		public VisualTreeElement RemoveChild(params VisualTreeElement[] children)
-		{
-			var childElement = children.Single();
+		{			
 			child = null;
-			((Gtk.Bin)Widget).Child = null;
+            ((Control)Widget).Controls.Clear();
 			return base.RemoveChildren(children);
 		}
 	}

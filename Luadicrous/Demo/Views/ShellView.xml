@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Control BindingContext="ViewModels/ShellViewModel.lua">
+<Component BindingContext="ViewModels/ShellViewModel.lua">
 	<VerticalPanel>
 		<HorizontalPanel>
 			<Text Text="{Binding ItemText}" />
-			<Button Click="{Binding Add}">
-				<Label Text="Add"/>
-			</Button>
+			<Button Click="{Binding Add}" Text="Add" />			
 		</HorizontalPanel>
 		<ListBox ItemsSource="{Binding Items}" Template="Views/ContentView.xml" />		
 	</VerticalPanel>
-</Control>
+</Component>

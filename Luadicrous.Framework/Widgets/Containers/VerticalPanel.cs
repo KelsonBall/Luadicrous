@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Xml;
+using wVBox = System.Windows.Forms.FlowLayoutPanel;
+using System.Windows.Forms;
 
 namespace Luadicrous.Framework
 {
 	public class VerticalPanel : MultipleItemContainer
 	{
-		private Gtk.VBox box;
+		private wVBox box;
 
-		internal override Gtk.Widget Widget
+		internal override object Widget
 		{
 			get { return box; }
-			set { box = (Gtk.VBox)value; }
+			set { box = (wVBox)value; }
 		}
 
 		internal VerticalPanel()
 		{
-			box = new Gtk.VBox();
+            box = new wVBox()
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoScroll = true,
+                Margin = new Padding(2)
+            };
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Component root)
 		{
 			VerticalPanel element = new VerticalPanel ();
 			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (

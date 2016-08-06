@@ -1,39 +1,50 @@
 ﻿using System;
 using System.Xml;
+using wButton = System.Windows.Forms.Button;
 
 namespace Luadicrous.Framework
 {
-	public class Button : SingleItemContainer
+	public class Button : LeafElement
 	{
-		private Gtk.Button button;
+		private wButton button;
 
-		internal override Gtk.Widget Widget
+		internal override object Widget
 		{
 			get { return button; }
-			set { button = (Gtk.Button)value; }
+			set { button = (wButton)value; }
 		}
 
 		public Button()
 		{
-			button = new Gtk.Button();                                   
+			button = new wButton
+            {
+                AutoSize = true               
+            };                                   
         }
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Component root)
 		{
 			Button element = new Button();
 			BindClick(element, node, root);
+            BindText(element, node, root);
 			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
 				element,
-				e => (Button)element.AddChild(e)
+				e => element
 			);
 		}
 
-		private static void BindClick(Button element, XmlNode node, Control root)
+        private static void BindText(Button element, XmlNode node, Component root)
+        {
+            XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Text");
+            element.button.Text = attribute?.Value;            
+        }
+
+		private static void BindClick(Button element, XmlNode node, Component root)
 		{
 			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Click");
 			if (attribute?.Value.StartsWith("{Binding ") ?? false)
 			{
-				Action<EventHandler> subscribe = func => element.button.Clicked += func;
+				Action<EventHandler> subscribe = func => element.button.MouseClick += (sender, args) => func(sender, args);
 				root.BindingContext.BindCommand(subscribe, "Click", attribute.Value);
 			}
 		}

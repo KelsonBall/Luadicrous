@@ -1,25 +1,25 @@
 ﻿using System.Xml;
 using System;
-using Gtk;
+using wEntry = System.Windows.Forms.TextBox;
 
 namespace Luadicrous.Framework
 {
 	public class Textbox : LeafElement
 	{
-		private Gtk.Entry entry;
+		private wEntry entry;
 
-		internal override Gtk.Widget Widget
+		internal override object Widget
 		{
 			get { return entry; }
-			set { entry = (Gtk.Entry)value; }
+			set { entry = (wEntry)value; }
 		}
 
 		public Textbox(string text = null)
 		{
-			if (text != null)
-				entry = new Gtk.Entry(text);
-			else
-				entry = new Gtk.Entry();
+            entry = new wEntry
+            {
+                Text = text ?? string.Empty,                                
+            };
 		}
 
 		public string Text
@@ -28,7 +28,7 @@ namespace Luadicrous.Framework
 			set { entry.Text = value; }
 		}
 
-		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+		internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Component root)
 		{
 			Textbox element = new Textbox();
 			BindText(element, node, root);
@@ -38,13 +38,13 @@ namespace Luadicrous.Framework
 			);
 		}
 
-		private static void BindText(Textbox element, XmlNode node, Control root)
+		private static void BindText(Textbox element, XmlNode node, Component root)
 		{
 			XmlAttribute attribute = (XmlAttribute)node.Attributes.GetNamedItem("Text");
 			if (attribute?.Value.StartsWith("{Binding ") ?? false)
 			{
 				Action<EventHandler> subscribe = 
-					func => ((IEditable)element.Widget).Changed += func;
+					func => ((wEntry)element.Widget).TextChanged += func;
 				root.BindingContext.BindProperty(subscribe, () => element.Text, text => element.Text = text, "Text", attribute.Value);
 			}
 			else

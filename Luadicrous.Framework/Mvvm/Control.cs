@@ -1,51 +1,50 @@
 ﻿using Luadicrous.Framework.Serialization;
 using System;
 using System.Xml;
+using wFrame = System.Windows.Forms.Panel;
 
 namespace Luadicrous.Framework
 {
-	public class Control : SingleItemContainer
+	public class Component : SingleItemContainer
 	{
-		private Gtk.Frame box;
+		private wFrame box;
 
-		internal override Gtk.Widget Widget
+		internal override object Widget
 		{
 			get { return box; }
-			set { box = (Gtk.Frame)value; }
+			set { box = (wFrame)value; }
 		}
 
 		public BindingContext BindingContext;
 
-		public Control()
+		public Component()
 		{
-			box = new Gtk.Frame ();
-			box.BorderWidth = 0;
-			box.ShadowType = Gtk.ShadowType.None;
+			box = new wFrame ();
 		}
 
-		public static Control LoadFromSource(string source)
+		public static Component LoadFromSource(string source)
 		{
 			XmlDocument document = new XmlDocument ();
 			document.Load (LuadicrousApplication.GetApplicationDirectoryRelativeTo(source));
 			var controlNode = document.DocumentElement;
-			Control root = (Control)Control.Parse(controlNode).Item1;
+			Component root = (Component)Component.Parse(controlNode).Item1;
 			root.AddChild(XmlSerializer.Serialize(controlNode.FirstChild, root));
 			return root;
 		}
 
-        public static Control LoadFromSource(string source, string key, dynamic model)
+        public static Component LoadFromSource(string source, string key, dynamic model)
         {
             XmlDocument document = new XmlDocument();
             document.Load(LuadicrousApplication.GetApplicationDirectoryRelativeTo(source));
             var controlNode = document.DocumentElement;
-            Control root = (Control)Control.Parse(controlNode, key, model).Item1;
+            Component root = (Component)Component.Parse(controlNode, key, model).Item1;
             root.AddChild(XmlSerializer.Serialize(controlNode.FirstChild, root));
             return root;
         }
 
         internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node)
 		{
-			Control element = new Control();
+			Component element = new Component();
 			XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
 			if (bindingAttribute != null)
             {                
@@ -54,13 +53,13 @@ namespace Luadicrous.Framework
 				
 			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
 				element,
-				e => (Control)element.AddChild(e)
+				e => (Component)element.AddChild(e)
 			);
 		}
 
         internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, string key, dynamic model)
         {
-            Control element = new Control();
+            Component element = new Component();
             XmlAttribute bindingAttribute = (XmlAttribute)node.Attributes.GetNamedItem("BindingContext");
             if (bindingAttribute != null)
             {
@@ -69,16 +68,16 @@ namespace Luadicrous.Framework
 
             return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>>(
                 element,
-                e => (Control)element.AddChild(e)
+                e => (Component)element.AddChild(e)
             );
         }
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> ParseNested(XmlNode node, Control root)
+        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> ParseNested(XmlNode node, Component root)
 		{
-			Control element = Control.LoadFromSource ( node.Attributes.GetNamedItem ("Source").Value );
+			Component element = Component.LoadFromSource ( node.Attributes.GetNamedItem ("Source").Value );
 			return new Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> (
 				element,
-				e => ((Control)element).AddChild(e)
+				e => ((Component)element).AddChild(e)
 			);
 		}
 

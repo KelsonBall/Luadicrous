@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace Luadicrous.Framework.Serialization
 {
     public static class XmlSerializer
     {
-        internal static VisualTreeElement Serialize(XmlNode node, Control root)
+        internal static VisualTreeElement Serialize(XmlNode node, Component root)
         {
             Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> parse = null;
             switch (node.Name)
             {
-                case "Control":
-                    parse = Control.ParseNested(node, root);
+                case "Component":
+                    parse = Component.ParseNested(node, root);
                     break;
                 case "VerticalPanel":
                     parse = VerticalPanel.Parse(node, root);
@@ -30,10 +27,7 @@ namespace Luadicrous.Framework.Serialization
                     parse = Label.Parse(node, root);
                     break;
                 case "Text":
-                    parse = Textbox.Parse(node, root);
-                    break;
-                case "DrawingArea":
-                    parse = DrawingArea.Parse(node, root);
+                    parse = Textbox.Parse(node, root);                    
                     break;
                 case "ListBox":
                     parse = ListBox.Parse(node, root);
@@ -56,6 +50,7 @@ namespace Luadicrous.Framework.Serialization
                     if (nextElement != null)
                         parse.Item2(nextElement);
                 }
+                ((Control)parse.Item1.Widget)?.Show();
                 return parse.Item1;
             }
             return null;

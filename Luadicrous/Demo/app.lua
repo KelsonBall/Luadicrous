@@ -3,7 +3,7 @@ import 'Luadicrous.Framework'
 
 window = Window("Hello from Lua")
 
-shell = Control.LoadFromSource("Views/ShellView.xml");
+shell = Component.LoadFromSource("Views/ShellView.xml");
 window:AddChild(shell);
 
 window:Render()

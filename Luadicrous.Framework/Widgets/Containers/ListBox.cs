@@ -1,28 +1,37 @@
-﻿using Gtk;
-using System;
+﻿using System;
 using System.Xml;
 using System.Collections.Generic;
+using wList = System.Windows.Forms.FlowLayoutPanel;
+using System.Windows.Forms;
 
 namespace Luadicrous.Framework
 {
     public class ListBox : MultipleItemContainer
     {
-        private Dictionary<string, Control> items = new Dictionary<string, Control>();
+        private Dictionary<string, Component> items = new Dictionary<string, Component>();
 
-        private VBox listbox;
+        private wList listbox;
 
-        internal override Widget Widget
+        internal override object Widget
         {
             get { return listbox; }
-            set { listbox = (VBox)value; }
+            set { listbox = (wList)value; }
         }        
 
         public ListBox()
         {
-            listbox = new VBox(false, 0);
+            listbox = new wList
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoScroll = true,
+                Margin = new Padding(2)
+            };
         }
 
-        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Control root)
+        internal static Tuple<VisualTreeElement, Func<VisualTreeElement, VisualTreeElement>> Parse(XmlNode node, Component root)
         {
             ListBox element = new ListBox();
             BindItemsSource(element, node, root);
@@ -32,7 +41,7 @@ namespace Luadicrous.Framework
             );
         }
 
-        private static void BindItemsSource(ListBox element, XmlNode node, Control root)
+        private static void BindItemsSource(ListBox element, XmlNode node, Component root)
         {
             var attribute = (XmlAttribute)node.Attributes.GetNamedItem("ItemsSource");
             var itemTemplate = (XmlAttribute)node.Attributes.GetNamedItem("Template");
@@ -52,7 +61,7 @@ namespace Luadicrous.Framework
 
         private void AddListItem(string template, string key, dynamic item)
         {
-            Control listItem = Control.LoadFromSource(template, key, item);
+            Component listItem = Component.LoadFromSource(template, key, item);
             items[key] = listItem;
             this.AddChildren(listItem);
         }
