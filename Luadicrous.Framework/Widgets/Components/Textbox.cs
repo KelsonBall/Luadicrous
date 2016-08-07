@@ -5,7 +5,7 @@ using Luadicrous.Framework.Serialization;
 
 namespace Luadicrous.Framework
 {
-	public class Textbox : LeafElement
+	internal class Textbox : LeafElement
 	{
 		private Gtk.Entry entry;
 
@@ -32,6 +32,7 @@ namespace Luadicrous.Framework
 		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Textbox element = new Textbox();
+			element.BindingContext = root.BindingContext;
 			BindText(element, node, root);
 			return new ElementPair(
 				element,

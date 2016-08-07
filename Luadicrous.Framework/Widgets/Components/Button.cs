@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace Luadicrous.Framework
 {
-	public class Button : SingleItemContainer
+	internal class Button : SingleItemContainer
 	{
 		private Gtk.Button button;
 
@@ -14,7 +14,7 @@ namespace Luadicrous.Framework
 			set { button = (Gtk.Button)value; }
 		}
 
-        public Button()
+        internal Button()
         {
             button = new Gtk.Button {
                 Vexpand = false,
@@ -27,6 +27,7 @@ namespace Luadicrous.Framework
 		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Button element = new Button();
+			element.BindingContext = root.BindingContext;
 			BindClick(element, node, root);
 			return new ElementPair(
 				element,

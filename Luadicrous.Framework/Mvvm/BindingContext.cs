@@ -9,11 +9,20 @@ namespace Luadicrous.Framework
 	{
 		private Lua scope;
 		private IDictionary<string, object> viewModel;
+		private string[] currentScipt;
 
 		public BindingContext()
 		{
 			scope = new Lua();
 			scope.LoadCLRPackage();
+			scope.DebugHook += (sender, e) => {
+				int line = e.LuaDebug.currentline;
+				if (line > 0 && line <= currentScipt.Length)
+				{
+					Console.WriteLine("> " + currentScipt[line - 1]);
+				}
+			};
+			scope.SetDebugHook (NLua.Event.EventMasks.LUA_MASKALL, 0);
 		}
 
 		public BindingContext(string source) : this()
@@ -43,6 +52,7 @@ namespace Luadicrous.Framework
             if (model is LuaTable)
                 model = ((LuaTable)model).ToDynamic();
 			string text = File.ReadAllText(file.FullName);
+			currentScipt = text.Split (new string[]{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             scope.PCall(text);
             LuaFunction func = scope["ViewModel"] as LuaFunction;            
             viewModel = ((LuaTable)func.Call(new object[] { key, ((object)model).Copy() })[0]).ToDynamic();
@@ -51,6 +61,7 @@ namespace Luadicrous.Framework
         public void LoadContext(FileInfo file)
         {
             string text = File.ReadAllText(file.FullName);
+			currentScipt = text.Split (new string[]{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             scope.PCall(text);
             LuaFunction func = scope["ViewModel"] as LuaFunction;
             viewModel = ((LuaTable)func.Call()[0]).ToDynamic();            

@@ -21,6 +21,7 @@ namespace Luadicrous.Framework
 		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			VerticalPanel element = new VerticalPanel ();
+			element.BindingContext = root.BindingContext;
 			return new ElementPair (
 				element,
 				e => ((VerticalPanel)element).AddChildren(e)

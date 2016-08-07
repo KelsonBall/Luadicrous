@@ -14,7 +14,7 @@ namespace Luadicrous.Framework
 			set { box = (Gtk.Frame)value; }
 		}
 
-		public BindingContext BindingContext;
+		public new BindingContext BindingContext;
 
 		public Control()
 		{
@@ -80,9 +80,7 @@ namespace Luadicrous.Framework
 				element,
 				e => ((Control)element).AddChild(e)
 			);
-		}
-
-		
+		}				
 	}
 }
 

@@ -5,7 +5,7 @@ using Luadicrous.Framework.Serialization;
 
 namespace Luadicrous.Framework.Widgets.Components
 {
-    public class Calendar : LeafElement
+    internal class Calendar : LeafElement
     {
         private Gtk.Calendar _calendar;
 
@@ -15,7 +15,7 @@ namespace Luadicrous.Framework.Widgets.Components
             set { _calendar = (Gtk.Calendar)value; }
         }
 
-        public Calendar()
+        internal Calendar()
         {
             _calendar = new Gtk.Calendar
             {
@@ -27,6 +27,7 @@ namespace Luadicrous.Framework.Widgets.Components
         internal static ElementPair Parse(XmlNode node, Control root)
         {
             Calendar calendar = new Calendar();
+			calendar.BindingContext = root.BindingContext;
             BindDate(calendar, node, root);
             return new ElementPair(
                 calendar,

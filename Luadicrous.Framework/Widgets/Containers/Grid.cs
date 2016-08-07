@@ -26,8 +26,9 @@ namespace Luadicrous.Framework
         }
 
         internal static ElementPair Parse(XmlNode node, Control root)
-        {
+        {			
             Grid grid = new Grid();            
+			grid.BindingContext = root.BindingContext;
             var rows = uint.Parse(node.Attributes.GetNamedItem("Rows").Value);
             var columns = uint.Parse(node.Attributes.GetNamedItem("Columns").Value);
             grid._table = new Table(rows, columns, true);

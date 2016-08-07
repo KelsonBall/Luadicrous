@@ -32,6 +32,7 @@ namespace Luadicrous.Framework
 		internal static ElementPair Parse(XmlNode node, Control root)
 		{
 			Label element = new Label ();
+			element.BindingContext = root.BindingContext;
 			BindText(element, node, root);
 			return new ElementPair (
 				element,

@@ -17,6 +17,11 @@
 			window.DeleteEvent += (i, j) => LuadicrousApplication.Quit();
 		}
 
+		public VisualTreeElement AddChild(VisualTreeElement element)
+		{
+			return base.AddChild (element);
+		}
+
 		public Window Render()
 		{
 			window.ShowAll();

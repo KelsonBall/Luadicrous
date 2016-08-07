@@ -9,9 +9,9 @@ function ViewModel(key, model)
 
     vm.Content:Set(model.Name)
 
-    vm.Delete = (function()
+    vm.Delete = function()
         Events.GetChannel("ShellContentViewDeletionChannel"):Publish(key)
-    end)
+    end
 
     return vm
 end

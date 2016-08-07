@@ -42,6 +42,15 @@ namespace Luadicrous.Framework.Serialization
                 case "Calendar":
                     parse = Calendar.Parse(node, root);
                     break;
+				case "Panel":
+					parse = Panel.Parse (node, root);
+					break;
+				case "VerticalSlider":
+					parse = VerticalSlider.Parse (node, root);
+					break;
+				case "HorizontalSlider":
+					parse = HorizontalSlider.Parse (node, root);
+					break;
                 default:
                     break;
             }

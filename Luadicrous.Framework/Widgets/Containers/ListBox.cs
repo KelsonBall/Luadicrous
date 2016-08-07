@@ -6,7 +6,7 @@ using Luadicrous.Framework.Serialization;
 
 namespace Luadicrous.Framework
 {
-    public class ListBox : MultipleItemContainer
+    internal class ListBox : MultipleItemContainer
     {
         private Dictionary<string, Control> items = new Dictionary<string, Control>();
 
@@ -18,7 +18,7 @@ namespace Luadicrous.Framework
             set { listbox = (VBox)value; }
         }        
 
-        public ListBox()
+        internal ListBox()
         {
             listbox = new VBox();                       
         }
@@ -26,6 +26,7 @@ namespace Luadicrous.Framework
         internal static ElementPair Parse(XmlNode node, Control root)
         {
             ListBox element = new ListBox();
+			element.BindingContext = root.BindingContext;
             BindItemsSource(element, node, root);
             return new ElementPair(
                 element,

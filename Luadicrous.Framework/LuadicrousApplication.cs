@@ -1,10 +1,15 @@
-﻿namespace Luadicrous.Framework
+﻿using System;
+
+namespace Luadicrous.Framework
 {
 	public class LuadicrousApplication
 	{		
 		public LuadicrousApplication()
 		{
 			Gtk.Application.Init();
+			GLib.ExceptionManager.UnhandledException += (GLib.UnhandledExceptionArgs args) => {
+				throw (Exception)args.ExceptionObject;
+			};
 		}
 
 		public void Run()

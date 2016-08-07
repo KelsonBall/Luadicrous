@@ -6,7 +6,7 @@ namespace Luadicrous.Framework
 	{
 		private VisualTreeElement child;
 
-		public VisualTreeElement AddChild(params VisualTreeElement[] children)
+		internal VisualTreeElement AddChild(params VisualTreeElement[] children)
 		{
 			var childElement = children.Single();
 			if (child != null)
@@ -16,9 +16,8 @@ namespace Luadicrous.Framework
 			return base.AddChildren(children);
 		}
 
-		public VisualTreeElement RemoveChild(params VisualTreeElement[] children)
-		{
-			var childElement = children.Single();
+		internal VisualTreeElement RemoveChild(params VisualTreeElement[] children)
+		{			
 			child = null;
 			((Gtk.Bin)Widget).Child = null;
 			return base.RemoveChildren(children);

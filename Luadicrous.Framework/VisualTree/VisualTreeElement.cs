@@ -8,6 +8,8 @@ namespace Luadicrous.Framework
 		internal abstract Widget Widget { get; set; }
 
         internal Dictionary<string, object> AttachedProperties { get; set; } = new Dictionary<string, object>();
+
+		internal BindingContext BindingContext { get; set; }
 	}
 }
 

@@ -1,4 +1,5 @@
 ﻿using NLua;
+using System;
 
 namespace Luadicrous.Framework
 {
