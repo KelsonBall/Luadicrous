@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Component BindingContext="ViewModels/ContentViewModel.lua">
-	<Grid Rows="1" Columns="2">
-		<Label Text="{Binding Content}" />
-		<Button Grid.Column="1" Click="{Binding Delete}" Text="X" />
-	</Grid>
-</Component>

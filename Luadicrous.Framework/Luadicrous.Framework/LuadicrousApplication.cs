@@ -7,7 +7,6 @@ using System.Reflection;
 using NLua.Event;
 using System.Diagnostics;
 using System.Windows.Forms;
-using MetroFramework.Forms;
 
 namespace Luadicrous.Framework
 {
@@ -26,7 +25,7 @@ namespace Luadicrous.Framework
             DirectoryInfo bin = new DirectoryInfo(GetDirectory("./bin/"));
 
             Debug.Assert(bin.Exists, "Could not find /bin/ directory.");
-
+                        
             var controlFactory = new ControlFactory(bin.EnumerateFiles("*.dll").Select(file => Assembly.LoadFrom(file.FullName)));
 
             ViewFactory = new ViewFactory(controlFactory);
@@ -62,7 +61,7 @@ namespace Luadicrous.Framework
         private static int windowCount;
         public static void Window(string source)
         {
-            MetroForm form = new MetroForm();
+            Form form = new Form();
             windowCount++;
             form.FormClosed += (sender, args) =>
             {

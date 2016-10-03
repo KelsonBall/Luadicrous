@@ -1,16 +1,16 @@
 ﻿using System;
 using Luadicrous.Framework.Attributes;
-using MetroFramework.Controls;
 using System.Drawing;
 using System.Windows.Forms;
 using Luadicrous.Framework;
+using FormsTextBox = System.Windows.Forms.TextBox;
 
 namespace Luadicrous.Controls
 {
     [VisualElement]
     public class TextBox : LeafElement
     {
-        private MetroTextBox text = new MetroTextBox();
+        private FormsTextBox text = new FormsTextBox();
 
         public override Control Control { get { return text; } }
 
@@ -26,6 +26,7 @@ namespace Luadicrous.Controls
             set { text.Text = value; }
         }
 
+        [BindableEvent]
         public Action TextChanged { get; set; }
 
         [BindableProperty]

@@ -12,19 +12,31 @@ namespace Luadicrous.Framework.Converters
 
     public static class BindingConverter
     {
-        public static dynamic ConvertBindingValue(Type to, string value)
+        public static dynamic ConvertBindingValue(Type to, object value)
         {
-            switch (getTypeType(to))
+            if (value == null)
+                return null;
+
+            if (value.GetType() == typeof(string))
             {
-                case TypeType.Integer:
-                    return Convert.ChangeType(int.Parse(value), to);
-                case TypeType.Decimal:
-                    return Convert.ChangeType(decimal.Parse(value), to);
-                case TypeType.Enum:
-                    return Enum.Parse(to, value);
-                default:
-                    return value;
+                string data = (string)value;
+                switch (getTypeType(to))
+                {
+                    case TypeType.Integer:
+                        return Convert.ChangeType(int.Parse(data), to);
+                    case TypeType.Decimal:
+                        return Convert.ChangeType(decimal.Parse(data), to);
+                    case TypeType.Enum:
+                        return Enum.Parse(to, data);
+                    default:
+                        return value;
+                }
             }
+            else if (to == typeof(string))
+            {
+                return value.ToString();
+            }
+            return Convert.ChangeType(value, to);
         }
 
         private static TypeType getTypeType(Type to)

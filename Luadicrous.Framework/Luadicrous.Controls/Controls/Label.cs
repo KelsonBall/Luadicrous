@@ -1,14 +1,14 @@
 ﻿using Luadicrous.Framework;
 using Luadicrous.Framework.Attributes;
-using MetroFramework.Controls;
 using System.Windows.Forms;
+using FormsLabel = System.Windows.Forms.Label;
 
 namespace Luadicrous.Controls
 {
     [VisualElement]
     public class Label : LeafElement
     {
-        private MetroLabel label = new MetroLabel();
+        private FormsLabel label = new FormsLabel();
         public override Control Control
         {
             get { return label; }

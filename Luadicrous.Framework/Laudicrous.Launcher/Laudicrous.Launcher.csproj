@@ -52,6 +52,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Resource Include="bin\Debug\app.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="bin\Debug\ViewModels\MainViewModel.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Demo\app.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Demo\ViewModels\MainViewModel.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Luadicrous.Framework\Luadicrous.Framework.csproj">
@@ -61,15 +73,27 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\bin\" />
-    <Folder Include="bin\Debug\ViewModels\" />
-    <Folder Include="bin\Debug\Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Demo\bin\Luadicrous.Controls.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Demo\Views\MainView.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\Views\MainView.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
+       Other similar extension points exist, see Microsoft.Common.targets. -->
+  <!--<Target Name="BeforeBuild">
+  </Target>-->
   <Target Name="AfterBuild">
+    <Copy SourceFiles="$(ProjectDir)Demo\*" DestinationFolder="$(ProjectDir)$(OutDir)" ContinueOnError="true" />
   </Target>
-  -->
+  <!-- -->
 </Project>

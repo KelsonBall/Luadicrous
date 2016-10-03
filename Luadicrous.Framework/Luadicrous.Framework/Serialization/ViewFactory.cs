@@ -24,8 +24,9 @@ namespace Luadicrous.Framework.Serialization
         {
             var source = LuadicrousApplication.SourceManager.GetScript(LuadicrousApplication.GetFileInfo(node.Attribute("ViewModel").Value));
             BindingContext context = new BindingContext(source);
+            context.LoadContext();
             View view = new View(context);
-
+            view.Control.SuspendLayout();
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (!child.Name.StartsWith("#"))
@@ -33,7 +34,8 @@ namespace Luadicrous.Framework.Serialization
                     view.AddControl(ControlFactory.CreateControl(view, child));
                 }
             }
-
+            view.Control.ResumeLayout();
+            view.Control.PerformLayout();
             return view;
         }
 
