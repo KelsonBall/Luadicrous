@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<View ViewModel="ViewModels/MainViewModel.lua">
+  <Row Dock="Left" Background="Green">
+    <Column Background="Red" Margin="32">
+      <Label Text="Top Left" />
+      <Label Text="{Binding EntryTextOut}" Foreground="{Binding DisplayTextColor}"/>
+    </Column>
+    <Column Padding="2, 10">
+      <Label Text="{Binding Clicks}" Background="#639" Foreground="AliceBlue"/>
+      <Button Click="{Binding OnClick}" Text="Add" />
+    </Column>
+  </Row>
+  <Column Dock="Right" Background="DarkOrange">
+    <Slider Value="{Binding SliderValue}"/>
+    <ProgressBar Value="{Binding ProgressValue}" />
+  </Column>
+  <TextBox Text="{Binding EntryTextIn}" TextChanged="{Binding OnTextChanged}" Dock="Bottom"/>
+</View>
