@@ -51,7 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <Resource Include="bin\Debug\app.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -71,9 +70,7 @@
       <Name>Luadicrous.Framework</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\bin\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Demo\bin\Luadicrous.Controls.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -84,6 +81,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="bin\Debug\Views\MainView.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\bin\Luadicrous.Controls.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
